@@ -46,9 +46,9 @@ while status==0:
         soup = BeautifulSoup(html_source, 'html.parser')
         table = soup.findAll('table')[1]
         status=1
-        print('foi \r')
+        print('\r foi')
     except Exception as e:
-        print('nao foi \r')
+        print('\r nao foi')
         time.sleep(1)
 
 records = []
