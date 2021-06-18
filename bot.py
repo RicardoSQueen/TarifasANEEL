@@ -9,49 +9,47 @@ import pandas as pd
 import time
 driver = webdriver.Chrome(executable_path=binary_path)
 from bot_funks import *
-# import urllib.request
-# url = 'https://www.aneel.gov.br/resultado-dos-processos-tarifarios-de-distribuicao'
 url = 'https://www2.aneel.gov.br/aplicacoes_liferay/tarifa/'
-# fp = urllib.request.urlopen(url)
-# mybytes = fp.read()
 page = requests.get(url)
 
-# soup = BeautifulSoup(page.content,"html.parser")
-# agent_categories = soup.find("select",{"name":"CategoriaAgente"}).findAll("option")
-# agent_category = soup.find("select",{"name":"CategoriaAgente"})
-# # Agents = soup.find("select",{"name":"Agentes"}).findAll("option")
-# # Agents
-
 driver.get(url)
+status = 0
+while status==0:
+    try:
 
-agent_category = Select(driver.find_element_by_name('CategoriaAgente'))
-# select by visible text
-agent_category.select_by_visible_text('Todos')
+        agent_category = Select(driver.find_element_by_name('CategoriaAgente'))
+        # select by visible text
+        agent_category.select_by_visible_text('Todos')
 
-time.sleep(0.5)
-agent = Select(driver.find_element_by_name('Agentes'))
-agent.select_by_visible_text('Todos')
+        time.sleep(0.5)
+        agent = Select(driver.find_element_by_name('Agentes'))
+        agent.select_by_visible_text('Todos')
 
-time.sleep(0.5)
-agent = Select(driver.find_element_by_name('TipoProcesso'))
-agent.select_by_visible_text('Todos')
+        time.sleep(0.5)
+        agent = Select(driver.find_element_by_name('TipoProcesso'))
+        agent.select_by_visible_text('Todos')
 
-time.sleep(0.5)
-agent = Select(driver.find_element_by_name('Ano'))
-agent.select_by_visible_text('Todos')
-# get element 
-element = driver.find_element_by_xpath('//input[@value="Procurar"]')
-# click the element
-element.click()
-time.sleep(10)
+        time.sleep(0.5)
+        agent = Select(driver.find_element_by_name('Ano'))
+        agent.select_by_visible_text('Todos')
+        # get element
+        time.sleep(0.5)
+        element = driver.find_element_by_xpath('//input[@value="Procurar"]')
+        # click the element
+        element.click()
+        time.sleep(10)
+        ## criando df
+        html_source = driver.page_source
+        # dfs = pd.read_html(html_source, skiprows=[0,3])
+        # dfs[1]
 
-## criando df
-html_source = driver.page_source
-# dfs = pd.read_html(html_source, skiprows=[0,3])
-# dfs[1]
-
-soup = BeautifulSoup(html_source, 'html.parser')
-table = soup.findAll('table')[1]
+        soup = BeautifulSoup(html_source, 'html.parser')
+        table = soup.findAll('table')[1]
+        status=1
+        print('foi \r')
+    except Exception as e:
+        print('nao foi \r')
+        time.sleep(1)
 
 records = []
 columns = []
@@ -84,32 +82,35 @@ df = df[remove_filter].reset_index(drop=True)
 df['Estrutura Tarifária'] = df['Estrutura Tarifária'].apply(lambda x: x[0]).str.replace(' ', '%20')
 cols = ['Agente', 'Categoria do Agente', 'Tipo de Processo', 'Data de Aniversário', 'Status Resultado', 'Estrutura Tarifária']
 df = df[cols]
-sheet_reader = {
-    'TA - Aplicação': {
-        'skiprows':2,
-        'skipcols':1
-    },
-    'TABELAS REH': {
-        'skiprows':1,
-        'skipcols':0,
-    },
-}
 driver.close()
-concess_not_working = []
-tarifas0 = pd.DataFrame()
-tarifas1 = pd.DataFrame()
-for i in range(df.shape[0]):
-    dfloc = df.loc[i]
-    test, type = read_links(dfloc, sheet_reader, concess_not_working)
-    if type == 0:
-        tarifas0=pd.concat([tarifas0, test])
-    elif type == 1:
-        tarifas0=pd.concat([tarifas1, test])
-    else:
-        print('bugou')
-print('DONE')
-cols_to_keep = ['Agente','Validade','SubGrupo','Modalidade_TA','Classe','SubClasse','Detalhe','Posto','unidade','Acessante', 'TotalTUSD', 'TotalTE']
-# tarifas[cols_to_keep].to_excel('tarifas.xlsx')
+
+# reading excels from aneel
+t0, concess = tariffs_all(df)
+t0 = t0.fillna(method='ffill')
+t0 = t0.sort_values(by=['Validade', 'Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'])
+t0.to_excel('tarifas.xlsx')
+t0.drop_duplicates(['Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'], 'last').to_excel('tarifas_recentes.xlsx')
+
+# concess_not_working = []
+# o_list = []
+
+# tarifas = pd.DataFrame()
+# print(df.shape[0])
+# for i in range(df.shape[0]):
+#     print(f'{i+1} de {df.shape[0]}')
+#     dfloc = df.loc[i]
+#     test = read_links(dfloc, o_list, concess_not_working)
+#     # read_links(zipfile, o_list, o_list, concess_not_working)
+#     # break
+#     # tarifas=pd.concat([tarifas, test])
+# print('DONE')
+# tarifas = pd.DataFrame([item for sublist in o_list for item in sublist])
+# tarifas = tarifas.fillna(method='ffill')
+# cols_to_keep = ['Agente','Validade','SubGrupo','Modalidade_TA','Classe','SubClasse','Detalhe','Posto','unidade','Acessante', 'TotalTUSD', 'TotalTE']
+# # tarifas[cols_to_keep].to_excel('tarifas.xlsx')
+
+
+
 
 #    print(df.loc[i,'Agente'])
     # try:
