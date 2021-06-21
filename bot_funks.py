@@ -27,7 +27,7 @@ def read_links(dfloc,o_list, concess_not_working):
     #     print(f'Something went wrong downloading from {url}')
     try:
         sheet_name = 'TABELAS REH'
-        test = pd.read_excel(url, sheet_name=sheet_name,skiprows=sheet_reader[sheet_name]['skiprows'], usecols="A:G", header=None, names=sheet_reader[sheet_name]['columns'], engine='openpyxl')
+        test = pd.read_excel(url, sheet_name=sheet_name,skiprows=sheet_reader[sheet_name]['skiprows'], usecols="A:G", header=None, names=sheet_reader[sheet_name]['columns'], engine='openpyxl', na_values=['', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan', '1.#IND', '1.#QNAN', '<NA>', 'N/A', 'NULL', 'NaN', 'n/a', 'nan', 'null'], keep_default_na = False)
         # test = pd.ExcelFile(dfloc['Estrutura Tarifária'], engine='openpyxl',encoding='latin1').parse(sheet_name=sheet_name,skiprows=sheet_reader[sheet_name]['skiprows'], usecols=lambda x: 'Unnamed' not in x)
         test = test[~test.isna().all(axis=1)]
         test['Agente'] = agent

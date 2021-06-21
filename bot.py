@@ -86,7 +86,8 @@ driver.close()
 
 # reading excels from aneel
 t0, concess = tariffs_all(df)
-t0 = t0.fillna(method='ffill')
+cols = ['Subgrupo', 'Modalidade', 'Acessante','Posto']
+t0[cols] = t0[cols].fillna(method='ffill')
 t0 = t0.sort_values(by=['Validade', 'Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'])
 t0.to_excel('tarifas.xlsx')
 t0.drop_duplicates(['Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'], 'last').to_excel('tarifas_recentes.xlsx')
