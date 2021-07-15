@@ -9,6 +9,7 @@ import pandas as pd
 import time
 driver = webdriver.Chrome(executable_path=binary_path)
 from bot_funks import *
+save_path = './'
 url = 'https://www2.aneel.gov.br/aplicacoes_liferay/tarifa/'
 page = requests.get(url)
 
@@ -89,8 +90,8 @@ t0, concess = tariffs_all(df)
 cols = ['Subgrupo', 'Modalidade', 'Acessante','Posto']
 t0[cols] = t0[cols].fillna(method='ffill')
 t0 = t0.sort_values(by=['Validade', 'Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'])
-t0.to_excel('tarifas.xlsx')
-t0.drop_duplicates(['Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'], 'last').to_excel('tarifas_recentes.xlsx')
+t0.to_excel(f'{save_path}/tarifas.xlsx')
+t0.drop_duplicates(['Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'], 'last').to_excel(f'{save_path}/tarifas_recentes.xlsx')
 
 # concess_not_working = []
 # o_list = []
