@@ -1,6 +1,6 @@
 requests
 beautifulsoup4
-chromedriver_py==91.0.4472.19
+chromedriver_py==93.0.4577.82
 pandas
 selenium
 openpyxl
