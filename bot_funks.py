@@ -40,19 +40,19 @@ def read_links(dfloc,o_list, concess_not_working):
         concess_not_working.append(agent)
         print(f'{agent}  Not Working')
         return(None)
-def tariffs_runner(df):
+def tariffs_runner(df, thread_num=10):
     threads= []
     o_list= []
     o_list= []
     concess_not_working = []
-    with ThreadPoolExecutor(max_workers=20) as executor:
+    with ThreadPoolExecutor(max_workers=thread_num) as executor:
         for i in range(df.shape[0]):
             dfloc = df.loc[i]
             threads.append(executor.submit(read_links, dfloc, o_list, concess_not_working))
             
     return [item for sublist in o_list for item in sublist], concess_not_working
-def tariffs_all(df):
-    t0, concess = tariffs_runner(df)
+def tariffs_all(df, thread_num=10):
+    t0, concess = tariffs_runner(df, thread_num)
     t0 = pd.DataFrame(t0)
     return t0, concess
 # def tariffs_to_df(df, sheet_reader):

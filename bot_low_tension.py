@@ -86,7 +86,7 @@ df = df[cols]
 driver.close()
 
 # reading excels from aneel
-t0, concess = tariffs_all(df)
+t0, concess = tariffs_all_lt(df)
 cols = ['Subgrupo', 'Modalidade', 'Classe','Subclasse','Posto']
 t0[cols] = t0[cols].fillna(method='ffill')
 t0 = t0.sort_values(by=['Validade', 'Agente', 'Subgrupo','Modalidade', 'Classe','Subclasse','Posto'])

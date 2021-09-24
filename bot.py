@@ -4,10 +4,14 @@ from bs4 import BeautifulSoup
 from requests import *
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-from chromedriver_py import binary_path # this will get you the path variable
+from webdriver_manager.chrome import ChromeDriverManager
+
+# from chromedriver_py import binary_path # this will get you the path variable
 import pandas as pd
 import time
-driver = webdriver.Chrome(executable_path=binary_path)
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
+# driver = webdriver.Chrome(executable_path=binary_path)
 from bot_funks import *
 save_path = './'
 url = 'https://www2.aneel.gov.br/aplicacoes_liferay/tarifa/'
