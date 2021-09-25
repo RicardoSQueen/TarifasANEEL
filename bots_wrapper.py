@@ -122,6 +122,6 @@ def wrapper(df, tension='high', save_path='.'):
     else:
         return("TEnsão é alta ou baixa")
 
-df = get_df()
-t2 = wrapper(df, tension='covid')
-t2[['Agente','Validade','Subgrupo', 'Modalidade', 'Classe', 'Subclasse', 'Detalhe', 'UC', 'Posto', 'CDE Covid TE']].to_excel('conta_covid.xlsx')
+# df = get_df()
+# t2 = wrapper(df, tension='covid')
+# t2[['Agente','Validade','Subgrupo', 'Modalidade', 'Classe', 'Subclasse', 'Detalhe', 'UC', 'Posto', 'CDE Covid TE']].to_excel('conta_covid.xlsx')
