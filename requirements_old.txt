@@ -1,6 +1,0 @@
-requests
-beautifulsoup4
-chromedriver_py==93.0.4577.82
-pandas
-selenium
-openpyxl

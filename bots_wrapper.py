@@ -101,8 +101,8 @@ def wrapper(df, tension='high', save_path='.'):
         cols = ['Subgrupo', 'Modalidade', 'Acessante','Posto']
         t0[cols] = t0[cols].fillna(method='ffill')
         t0 = t0.sort_values(by=['Validade', 'Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'])
-        t0.to_excel(f'{save_path}/tarifas.xlsx')
-        t0.drop_duplicates(['Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'], 'last').to_excel(f'{save_path}/tarifas_recentes.xlsx')
+        t0.to_excel(f'{save_path}/tarifas_AT.xlsx', index=False)
+        t0.drop_duplicates(['Agente', 'Subgrupo','Modalidade', 'Acessante', 'Posto'], 'last').to_excel(f'{save_path}/tarifas_recentes_AT.xlsx', index=False)
         return t0
     elif tension == 'low':
         # reading excels from aneel
@@ -110,14 +110,16 @@ def wrapper(df, tension='high', save_path='.'):
         cols = ['Subgrupo', 'Modalidade', 'Classe','Subclasse','Posto']
         t0[cols] = t0[cols].fillna(method='ffill')
         t0 = t0.sort_values(by=['Validade', 'Agente', 'Subgrupo','Modalidade', 'Classe','Subclasse','Posto'])
-        t0.to_excel(f'{save_path}/tarifas_BT.xlsx')
-        t0.drop_duplicates(['Agente', 'Subgrupo','Classe','Subclasse','Posto'], 'last').to_excel(f'{save_path}/tarifas_recentes_BT.xlsx')
+        t0.to_excel(f'{save_path}/tarifas_BT.xlsx', index=False)
+        t0.drop_duplicates(['Agente', 'Subgrupo','Classe','Subclasse','Posto'], 'last').to_excel(f'{save_path}/tarifas_recentes_BT.xlsx', index=False)
         return t0
     elif tension == 'covid':
         t0, concess = tariffs_all_covid(df)
         cols = ['Subgrupo', 'Modalidade', 'Classe','Subclasse','Detalhe','UC','Posto']
         t0[cols] = t0[cols].fillna(method='ffill')
         t0 = t0[t0['UNIDADE'].notna()]
+        t0.to_excel(f'{save_path}/encargos_covid.xlsx', index=False)
+
         return t0
     else:
         return("TEnsão é alta ou baixa")
