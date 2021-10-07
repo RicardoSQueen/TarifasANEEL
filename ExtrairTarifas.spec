@@ -17,7 +17,7 @@ a = Analysis(['ExtrairTarifas.py'],
              win_private_assemblies=False,
              cipher=block_cipher,
              noarchive=False)
-a.datas += [('energisa-comercializadora.png','icone.png')]
+a.datas += [('energisa-comercializadora.png','./','icone.png')]
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 
