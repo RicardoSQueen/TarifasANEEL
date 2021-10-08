@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QDialog, QGridLayout, QGro
 from PyQt5.QtGui import QPixmap, QFont, QIcon
 from bots_wrapper import *
 # import matplotlib.pyplot as plt
-### pyinstaller.exe .\Modulacao.spec --onedir --clean --noconsole --noconfirm
+### pyinstaller .\ExtrairTarifas.spec --clean --icon=icone.ico
 ### Definindo infos extras:
 
 
