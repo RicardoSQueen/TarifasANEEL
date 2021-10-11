@@ -1,4 +1,5 @@
 import os
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit, QPushButton, QRadioButton,
         QVBoxLayout, QFileDialog, QMessageBox, QStyleFactory)
@@ -112,20 +113,20 @@ class WidgetGallery(QDialog):
 
         self.import_data = QPushButton("Estou Pronto e quero importar resultados para...")
         self.info2 = QLabel("Aguarde os passos da exportação após selecionar a pasta de destino.\nNão feche a janela do Chrome aberta.")
-        layout = QVBoxLayout()
-        # layout.addWidget(self.medicoes_path)
-        # layout.addWidget(self.medicoes_b,0,Qt.AlignRight)
-        # layout.addWidget(self.radioButton1)
-        # layout.addWidget(self.radioButton2)
-        # layout.addWidget(self.radioButton3)
-        layout.addWidget(self.import_data)
-        layout.addWidget(self.info2)
-        layout.addStretch(1)
+        self.tr_layout = QVBoxLayout()
+        # self.tr_layout.addWidget(self.medicoes_path)
+        # self.tr_layout.addWidget(self.medicoes_b,0,Qt.AlignRight)
+        # self.tr_layout.addWidget(self.radioButton1)
+        # self.tr_layout.addWidget(self.radioButton2)
+        # self.tr_layout.addWidget(self.radioButton3)
+        self.tr_layout.addWidget(self.import_data)
+        self.tr_layout.addWidget(self.info2)
+        self.tr_layout.addStretch(1)
 
         # self.getPath(self.medicoes_path, self.medicoes_b)
         # self.analyze_cons.clicked.connect(self.analyze_modulation)
         self.import_data.clicked.connect(self.bot_runner)
-        self.topRightGroupBox.setLayout(layout) 
+        self.topRightGroupBox.setLayout(self.tr_layout) 
     def bot_runner(self):
         try:
             # self.thread = QThread()
@@ -147,8 +148,11 @@ class WidgetGallery(QDialog):
             self.info2.setText("Processo Finalizado!")
             QApplication.processEvents()
         except Exception as e:
-            self.info2.setText(f"Algo deu errado. Verifique a mensagem abaixo:\n{e}")
-
+            self.info2.setText(f"Algo deu errado. Verifique a mensagem abaixo:")
+            text = QtWidgets.QTextEdit()
+            text.setPlainText(str(e))
+            self.tr_layout.addWidget(text)
+            self.topRightGroupBox.setLayout(self.tr_layout)
         return
 if __name__ == '__main__':
     try:

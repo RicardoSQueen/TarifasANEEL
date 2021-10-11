@@ -88,7 +88,7 @@ def get_df(url = 'https://www2.aneel.gov.br/aplicacoes_liferay/tarifa/'):
     df['Estrutura Tarifária'] = df['Estrutura Tarifária'].apply(lambda x: x[0]).str.replace(' ', '%20')
     cols = ['Agente', 'Categoria do Agente', 'Tipo de Processo', 'Data de Aniversário', 'Status Resultado', 'Estrutura Tarifária']
     df = df[cols]
-    driver.close()
+    driver.quit()
     return df
 
 
