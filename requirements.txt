@@ -4,3 +4,4 @@ webdriver_manager==3.4.2
 selenium==3.141.0
 beautifulsoup4==4.10.0
 PyQt5==5.15.4
+openpyxl
